@@ -1,0 +1,70 @@
+<div class="app_signin">
+  <mat-card class="login-card">
+    <h2>Sign in</h2>
+    <p>Welcome!</p>
+    <button type="button" class="login-with-google-btn" >
+      Sign in with Google
+    </button>
+    <span class="or">OR</span>
+    <!-- <form>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input [(ngModel)]="email" matInput type="email" placeholder="Enter your email" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input [(ngModel)]="password" matInput type="password" placeholder="Enter your password" />
+      </mat-form-field>
+      <p class="register-link">
+        Don't have an account? <a routerLink="/signup">Register here</a>
+      </p>
+      <button (click)="login()" mat-raised-button color="primary" class="full-width">Login</button>
+      <p NgIf="errorMessage">{{ errorMessage }}</p>
+    </form> -->
+    <form #loginForm="ngForm" (ngSubmit)="login()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input 
+          [(ngModel)]="email" 
+          matInput 
+          type="email" 
+          name="email" 
+          placeholder="Enter your email" 
+          required 
+          #emailInput="ngModel" 
+        />
+        <mat-error *ngIf="emailInput.invalid && emailInput.touched">
+          A valid email is required.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input 
+          [(ngModel)]="password" 
+          matInput 
+          type="password" 
+          name="password" 
+          placeholder="Enter your password" 
+          required 
+          minlength="6" 
+          #passwordInput="ngModel" 
+        />
+        <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+          Password must be at least 6 characters long.
+        </mat-error>
+      </mat-form-field>
+      <p class="register-link">
+        Don't have an account? <a routerLink="/signup">Register here</a>
+      </p>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        class="full-width" 
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+      <p *ngIf="errorMessage" style="color: #F00;">{{ errorMessage }}</p>
+    </form>
+  </mat-card>
+</div>

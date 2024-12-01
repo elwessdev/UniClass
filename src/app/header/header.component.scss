@@ -1,0 +1,26 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+.nav{
+    // padding: 0 80px;
+    span{
+        cursor: pointer;
+    }
+    .btns{
+        button{
+            margin-right: 10px;
+            color: #FFF;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        button:first-of-type{
+            margin-right: 10px;
+            background-color: #1062e7;
+            color: #FFF;
+        }
+        button:last-of-type{
+            background-color: #fd7b03;
+            color: #FFF;
+        }
+    }
+}
