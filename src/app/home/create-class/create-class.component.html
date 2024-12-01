@@ -1,0 +1,21 @@
+<mat-card class="c_c">
+    <h2>Create Class</h2>
+    <form #classForm="ngForm">
+        <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Class name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="classData.name" required />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput name="description" [(ngModel)]="classData.description" required></textarea>
+        </mat-form-field>
+        <!-- <button mat-raised-button style="color: #FFF;" color="primary" class="full-width" type="submit">
+        Create
+        </button> -->
+        <div class="button-group">
+            <button mat-raised-button color="primary" (click)="closeDialog()">Create</button>
+            <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
+        </div>
+        <p *ngIf="errorMessage" style="color: #F00;margin: 10px 0 0 0;">{{ errorMessage }}</p>
+    </form>
+</mat-card>

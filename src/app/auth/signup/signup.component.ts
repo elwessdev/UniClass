@@ -8,6 +8,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'; // Import Firebase 
 import { Router } from '@angular/router'; // Import Router for navigation
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../service/auth.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-signup',
@@ -31,31 +33,28 @@ export class SignupComponent {
   confirmPassword: string = '';
   errorMessage: string = '';
 
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit() {
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match!';
-      return;
+  ngOnInit(): void {
+    this.authService.getUser().subscribe((user: User | null) => {  // Type the 'user' as 'User | null'
+      if (user) {
+        console.log('User already logged in:', user);
+        this.router.navigate(['/home']);
+      }
+    });
+  }
+
+  async signup(): Promise<void> {
+    try {
+      if (this.password !== this.confirmPassword) {
+        this.errorMessage = 'Passwords do not match!';
+        return;
+      }
+      await this.authService.signup(this.email, this.password, this.username);
+      this.router.navigate(['/home']);
+    } catch (error: any) {
+      this.errorMessage = "Something went wrong. Please try again.";
+      console.log(error.message);
     }
-    this.afAuth
-      .createUserWithEmailAndPassword(this.email, this.password)
-      .then((userCredential) => {
-        // Successfully signed up
-        console.log('User registered:', userCredential.user);
-
-        // Optionally, update user profile with the username
-        userCredential.user?.updateProfile({
-          displayName: this.username,
-        });
-
-        // Redirect to home page
-        // this.router.navigate(['/home']);
-      })
-      .catch((error) => {
-        // Handle errors
-        this.errorMessage = "The email address is already in use by another account."
-        console.log(error);
-      });
   }
 }

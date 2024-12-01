@@ -1,0 +1,61 @@
+.join_class{
+    width: 100%;
+    .c_c{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: none;
+        margin: 0 auto;
+        margin-top: 0;
+        background: none;
+        h2{
+            margin: 0;
+            font-size: 30px;
+            margin-bottom: 30px;
+            color: #222;
+        }
+        p{
+            margin: 0;
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f5f5f5;
+        }
+        .mat-mdc-form-field{
+            margin-bottom: 0 !important;
+        }
+        .full-width {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .register-link {
+            margin-top: 0;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .register-link a {
+            color: #1062e7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        button{
+            width: fit-content !important;
+            background: #1062e7;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 21px 25px;
+            margin: 0;
+        }
+    }
+}

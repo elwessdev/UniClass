@@ -1,17 +1,22 @@
 <div class="home-content">
     <div class="main_section">
-        <h1>Teaching</h1>
+        <!-- <h1>Teaching</h1> -->
+        <h1>My Classes</h1>
         <div class="cards">
-            <div class="card">
-                <div class="title">
+            <div class="card" *ngFor="let classItem of classes">
+                <div class="title" style="background-image: url({{classItem.cover}});">
                     <div class="infos">
-                        <p>Python class for DSI1.2</p>
+                        <p>{{classItem.name}}</p>
+                        <span>{{classItem.description}}</span>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />
+                    <img src={{classItem.user_photo}} />
                 </div>
-                <div class="actions">
-                    <button mat-raised-button>Move</button>
-                    <button mat-raised-button>Delete</button>
+                <div class="details">
+                    <div class="code">Code: {{classItem.code}}</div>
+                    <div class="actions">
+                        <button mat-raised-button>Move</button>
+                        <button mat-raised-button (click)="removeClass(classItem.id)">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>

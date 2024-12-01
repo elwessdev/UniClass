@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CanActivateChild } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
+import { CanActivateChild, Router } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { map, tap, take } from 'rxjs/operators';
 
@@ -9,10 +8,21 @@ import { map, tap, take } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivateChild {
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+  constructor(private auth: Auth, private router: Router) {}
 
   canActivateChild(): Observable<boolean> {
-    return this.afAuth.authState.pipe(
+    return new Observable<boolean>((observer) => {
+      this.auth.onAuthStateChanged((user) => {
+        if (user) {
+          observer.next(true);
+          observer.complete();
+        } else {
+          this.router.navigate(['/signin']);
+          observer.next(false);
+          observer.complete();
+        }
+      });
+    }).pipe(
       take(1),
       map(user => !!user),
       tap(isAuthenticated => {

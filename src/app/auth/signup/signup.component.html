@@ -2,7 +2,7 @@
     <mat-card class="signup-card">
         <h2>Signup</h2>
         <p>Welcome!</p>
-        <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+        <form (ngSubmit)="signup()" #signupForm="ngForm">
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Username</mat-label>
                 <input matInput type="text" placeholder="Enter your username" [(ngModel)]="username" name="username" required />
