@@ -2,25 +2,10 @@
   <mat-card class="login-card">
     <h2>Sign in</h2>
     <p>Welcome!</p>
-    <button type="button" class="login-with-google-btn" >
+    <button (click)="loginWithGoogle()" type="button" class="login-with-google-btn" >
       Sign in with Google
     </button>
     <span class="or">OR</span>
-    <!-- <form>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input [(ngModel)]="email" matInput type="email" placeholder="Enter your email" />
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Password</mat-label>
-        <input [(ngModel)]="password" matInput type="password" placeholder="Enter your password" />
-      </mat-form-field>
-      <p class="register-link">
-        Don't have an account? <a routerLink="/signup">Register here</a>
-      </p>
-      <button (click)="login()" mat-raised-button color="primary" class="full-width">Login</button>
-      <p NgIf="errorMessage">{{ errorMessage }}</p>
-    </form> -->
     <form #loginForm="ngForm" (ngSubmit)="login()">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>

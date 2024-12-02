@@ -1,8 +1,8 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit,inject } from '@angular/core';
 import { ClassComponent } from './class/class.component';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CreateClassComponent } from './create-class/create-class.component';
 import { JoinClassComponent } from './join-class/join-class.component';
 import { User } from 'firebase/auth';
@@ -10,6 +10,13 @@ import { AuthService } from '../service/auth.service';
 import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 import { ClassService } from '../service/class.service';
+import { UserService } from '../service/user.service';
+
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 /* Material Modules */
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -47,22 +54,68 @@ export class HomeComponent implements OnInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   classes: any[] = [];
+  userClasses: any[] = [];
 
-  constructor(private authService: AuthService, private dialog: MatDialog, private classService: ClassService) {}
+  private _snackBar = inject(MatSnackBar);
+  horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  durationInSeconds = 3;
+  // openSnackBar() {
+  //   this._snackBar.open('Test', '', {
+  //     horizontalPosition: this.horizontalPosition,
+  //     verticalPosition: this.verticalPosition,
+  //     // duration: this.durationInSeconds * 1000,
+  //   });
+  // }
+
+  constructor(private authService: AuthService, private dialog: MatDialog, private classService: ClassService, private userService: UserService, private router: Router) {}
 
   // Join Class
   openJoinClass() {
-    this.dialog.open(JoinClassComponent, {
-      width: '430px',
+    const dialogRef = this.dialog.open(JoinClassComponent, { width: '430px'});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let userDt = {
+          user_id: this.userData?.uid,
+          user_name: this.userData?.displayName,
+          user_photo: this.userData?.photoURL
+        }
+        this.joinClass(userDt, result);
+      }
     });
   }
+  joinClass(userDt: any, code: string) {
+    this.classService.joinClass(userDt, code)
+      .then((res) => {
+        this._snackBar.open(res, '', {
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          duration: this.durationInSeconds * 1000,
+        });
+      })
+      .catch((error) => {
+        console.error('Error:', error.message);
+      })
+  }
 
-  ngOnInit(): void {
+  // Get joined classes
+  async getJoinedClasses(id: string) {
+    try {
+        this.userClasses = await this.classService.getUserClasses(id);
+        console.log("get join classes:", this.userClasses);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+    
+  // }
+  async ngOnInit() {
     this.authService.getUser().subscribe((user) => {
       // this.userData = user;
       if (user) {
-        console.log('Firebase user data:', user);
+        // console.log('Firebase user data:', user);
         this.fetchUserDetails(user.uid);
+        this.getJoinedClasses(user.uid);
         this.userData = user;
         this.classService.getClassesForUser(user.uid).subscribe((classes: any[]) => {
           this.classes = classes;
@@ -78,6 +131,7 @@ export class HomeComponent implements OnInit {
     try {
       this.userDetails = await this.authService.getUserDetails(userId);
       console.log('Firestore user details:', this.userDetails);
+      this.userService.setUserData(this.userDetails);
     } catch (error) {
       console.error('Error fetching Firestore user details:', error);
     }
@@ -116,7 +170,12 @@ export class HomeComponent implements OnInit {
         this.classService.addClass(classToAdd).then(() => {
           this.successMessage = 'Class created successfully!';
           this.errorMessage = null;
-          console.log("class added done");
+          this._snackBar.open("Class created successfully!", '', {
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: this.durationInSeconds * 1000,
+          });
+          // console.log("class added done");
         }).catch((error) => {
           console.error('Error adding class:', error);
           this.errorMessage = 'Failed to create class. Please try again later.';
@@ -147,5 +206,10 @@ export class HomeComponent implements OnInit {
     ]
     const randomIndex = Math.floor(Math.random() * links.length);
     return links[randomIndex];
+  }
+
+  // Class Details
+  goToDetails(classId: string): void {
+    this.router.navigate(['home/details', classId]);
   }
 }

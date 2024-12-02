@@ -53,4 +53,10 @@ export class SigninComponent {
       this.errorMessage = "Invalid email or password. Please try again.";
     }
   }
+
+  loginWithGoogle() {
+    this.authService.googleLogin().catch((error) => {
+      console.error('Error during Google login:', error);
+    });
+  }
 }

@@ -3,6 +3,14 @@
 }
 .nav{
     // padding: 0 80px;
+    .logo{
+        display: flex;
+        align-items: center;
+        img{
+            width: 45px;
+            margin-right: 5px;
+        }
+    }
     span{
         cursor: pointer;
     }

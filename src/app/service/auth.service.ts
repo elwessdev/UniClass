@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, User, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Firestore, doc, setDoc,getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -75,6 +75,31 @@ export class AuthService {
       return userDoc.data();
     } else {
       throw new Error('User not found in Firestore');
+    }
+  }
+
+  async googleLogin(): Promise<any> {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(this.auth, provider);
+      const user = userCredential.user;
+      if (user) {
+        const userDocRef = doc(this.firestore, `users/${user.uid}`);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          await setDoc(userDocRef, {
+            uid: user.uid,
+            email: user.email,
+            name: user.displayName,
+            photoURL: user.photoURL,
+            createdAt: new Date(),
+          });
+        }
+        this.router.navigate(['/home']);
+      }
+    } catch (error) {
+      return 'Google Login Error:' +error;
+      // throw error;
     }
   }
 }

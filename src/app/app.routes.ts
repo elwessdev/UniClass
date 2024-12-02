@@ -21,7 +21,7 @@ export const routes: Routes = [
                 component: CardsComponent,
             },
             {
-                path: 'details',
+                path: 'details/:id',
                 component: ClassComponent,
             },
         ],

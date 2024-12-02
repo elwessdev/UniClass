@@ -1,47 +1,63 @@
 <div class="class-part">
     <div class="cnt-prt">
         <div class="infos">
-            <img src="https://gstatic.com/classroom/themes/img_reachout.jpg" />
+            <img src={{classData?.cover}} />
             <div class="desx">
-                <h3>Python class for DSI1.2</h3>
-                <p>Python class for DSI1.2</p>
+                <h3>{{classData?.name}}</h3>
+                <p>{{classData?.description}}</p>
+            </div>
+            <div class="code" *ngIf="classData?.user_id == user?.uid">
+                Code: {{classData?.code}}
             </div>
         </div>
-        <mat-tab-group mat-stretch-tabs="true" mat-align-tabs="center">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
             <mat-tab label="Material">
                 <div class="bs">
-                    <mat-card class="announcement-card">
+                    <mat-card class="announcement-card" *ngIf="classData?.user_id == user?.uid">
                         <mat-form-field appearance="outline" class="full-width">
                             <textarea
                                 matInput
                                 placeholder="Announce something to your class"
                                 rows="3"
+                                [(ngModel)]="announcement"
                             ></textarea>
                         </mat-form-field>
                         <div class="post-controls">
-                            <button mat-flat-button color="primary">Post</button>
+                            <button mat-flat-button color="primary" (click)="addMaterial()">Post</button>
                             <button mat-flat-button >Cancel</button>
                         </div>
                     </mat-card>
                     <div class="posts">
-                        <mat-card class="post-card">
+                        <mat-card class="post-card" *ngFor="let announcementItem of announcements">
                             <div class="post-header">
                                 <img
                                     class="avatar"
-                                    src="https://via.placeholder.com/40" 
+                                    src={{classData?.user_photo}}
                                     alt="Avatar"
                                 />
                                 <div class="post-info">
-                                    <div class="username">TAKWA Omrani</div>
-                                    <div class="post-date">Sep 23 2024</div>
+                                    <div class="username" style="text-transform: capitalize;">{{classData?.user_name}} </div>
+                                    <div class="post-date">{{classData?.date?.toDate() | date:'dd/MM/yyyy HH:mm'}}</div>
                                 </div>
-                                <button mat-icon-button aria-label="More options">
+                                <!-- <button mat-icon-button aria-label="More options">
                                     <mat-icon>more_vert</mat-icon>
                                 </button>
+                                <button mat-icon-button aria-label="Delete">
+                                    <mat-icon>delete</mat-icon>
+                                </button> -->
+                                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <!-- (click)="deleteAnnouncement(announcementItem?.id)" -->
+                                    <button mat-menu-item>
+                                        <span>Delete</span>
+                                        <mat-icon style="margin-right: 4px;">delete</mat-icon>
+                                    </button>
+                                </mat-menu>
                             </div>
                             <div class="post-content">
-                                <p>chapitre1: les conteneurs</p>
-                                <p>chapitre2: les sous programmes en python</p>
+                                <p>{{announcementItem?.content}}</p>
                             </div>
                         </mat-card>
                     </div>
@@ -198,8 +214,21 @@
                     </div>
                 </div>
             </mat-tab>
-            <mat-tab label="Exams">Exams</mat-tab>
-            <mat-tab label="Events">Events</mat-tab>
+            <mat-tab label="Exams"><div class="bs">
+                <div class="mat_item">Exam 1</div>
+                <div class="mat_item">Exam 2</div>
+                <div class="mat_item">Exam 3</div>
+            </div></mat-tab>
+            <mat-tab label="Events"><div class="bs">
+                <div class="mat_item">Event 1</div>
+                <div class="mat_item">Event 2</div>
+                <div class="mat_item">Event 3</div>
+            </div></mat-tab>
+            <mat-tab label="Students"><div class="bs">
+                <div class="mat_item">Student 1</div>
+                <div class="mat_item">Student 2</div>
+                <div class="mat_item">Student 3</div>
+            </div></mat-tab>
         </mat-tab-group>
     </div>
 </div>

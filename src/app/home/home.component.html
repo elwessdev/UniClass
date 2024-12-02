@@ -19,22 +19,26 @@
                             <li><a (click)="openCreateClass()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>Create Class</a></li>
                         </ul>
                     </div>
-                    <div class="section">
+                    <div class="section" *ngIf="classes.length != 0">
                         <h3 class="section-header">Teaching</h3>
                         <ul>
-                            <li><a class="active"><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 1</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 2</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 3</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 4</a></li>
+                            <li *ngFor="let classItem of classes">
+                                <a (click)="goToDetails(classItem.id)">
+                                    <img src={{classItem.user_photo}} />
+                                    {{classItem.name}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    <div class="section lst">
+                    <div class="section lst" *ngIf="userClasses.length != 0">
                         <h3 class="section-header">Enrolled</h3>
                         <ul>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 1</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 2</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 3</a></li>
-                            <li><a><img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />Class 4</a></li>
+                            <li *ngFor="let classItem of userClasses">
+                                <a (click)="goToDetails(classItem.id)">
+                                    <img src={{classItem.data?.user_photo}} />
+                                    {{classItem.data?.name}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </mat-nav-list>

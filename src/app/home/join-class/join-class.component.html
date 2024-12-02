@@ -4,10 +4,14 @@
         <form>
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Class code</mat-label>
-                <input matInput type="text"  name="name" />
+                <input matInput type="text" [(ngModel)]="classCode" required  name="name" />
             </mat-form-field>
-            <button mat-raised-button style="color: #FFF;" color="primary" class="full-width">Join</button>
-            <!-- <p *ngIf="errorMessage" style="color: #F00;">{{ errorMessage }}</p> -->
+            <!-- <button mat-raised-button style="color: #FFF;" color="primary" class="full-width">Join</button> -->
+            <div class="button-group">
+                <button mat-raised-button color="primary" (click)="closeDialog()">Join</button>
+                <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
+            </div>
+            <p *ngIf="errorMessage" style="color: #F00; margin: 10px 0 0 0; font-size: 16px;">{{ errorMessage }}</p>
         </form>
     </mat-card>
 </div>

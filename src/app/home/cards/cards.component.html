@@ -14,42 +14,31 @@
                 <div class="details">
                     <div class="code">Code: {{classItem.code}}</div>
                     <div class="actions">
-                        <button mat-raised-button>Move</button>
+                        <button mat-raised-button (click)="goToDetails(classItem.id)">Move</button>
                         <button mat-raised-button (click)="removeClass(classItem.id)">Delete</button>
                     </div>
                 </div>
             </div>
+            <p class="nothing" *ngIf="classes.length == 0">No classes available yet</p>
         </div>
     </div>
     <div class="main_section">
         <h1>Enrolled</h1>
         <div class="cards">
-            <div class="card">
-                <div class="title">
+            <div class="card" *ngFor="let classItem of userClasses">
+                <div class="title" style="background-image: url({{classItem?.data?.cover}});">
                     <div class="infos">
-                        <p>Python class for DSI1.2</p>
-                        <span>Osama Benali</span>
+                        <p>{{classItem?.data?.name}}</p>
+                        <span>{{classItem?.data?.description}}</span>
                     </div>
-                    <img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />
+                    <img src={{classItem?.data?.user_photo}} />
                 </div>
                 <div class="actions">
-                    <button mat-raised-button>Move</button>
-                    <button mat-raised-button>Unrolle</button>
+                    <button mat-raised-button (click)="goToDetails(classItem?.id)">Move</button>
+                    <button mat-raised-button (click)="Unroll(classItem?.id)">Unroll</button>
                 </div>
             </div>
-            <div class="card">
-                <div class="title">
-                    <div class="infos">
-                        <p>Python class for DSI1.2</p>
-                        <span>Osama Benali</span>
-                    </div>
-                    <img src="https://lh3.googleusercontent.com/a/ACg8ocLZ_pb2LVYPdQE3qFNXYWDkR_NBtk_nC_-gBCz3vJDM5wTWfw=s75-c-mo" />
-                </div>
-                <div class="actions">
-                    <button mat-raised-button>Move</button>
-                    <button mat-raised-button>Unrolle</button>
-                </div>
-            </div>
+            <p class="nothing" *ngIf="userClasses.length == 0">No classes available yet</p>
         </div>
     </div>
 </div>
